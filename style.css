@@ -1,0 +1,325 @@
+:root {
+  color-scheme: dark;
+  --bg: #131b29;
+  --bg-soft: #1a2434;
+  --panel: #212d40;
+  --panel-deep: #1d2737;
+  --panel-soft: #2a3648;
+  --text: #d8dee9;
+  --muted: #93a0b4;
+  --line: rgba(255, 255, 255, 0.08);
+  --accent: #d8dde6;
+  --accent-strong: #f4f7fb;
+  --shadow: 0 20px 40px rgba(6, 12, 22, 0.42);
+  --radius-xl: 20px;
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.05), transparent 28%),
+    linear-gradient(180deg, #182233 0%, var(--bg) 100%);
+}
+
+header {
+  padding: 18px 18px 0;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--accent-strong);
+}
+
+main {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr) 220px;
+  grid-template-areas:
+    "sidebar chart summary"
+    "sidebar response response";
+  gap: 18px;
+  align-items: start;
+  padding: 14px 18px 18px;
+}
+
+aside,
+section,
+fieldset,
+article {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  box-shadow: var(--shadow);
+}
+
+aside {
+  grid-area: sidebar;
+  padding: 14px;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+legend,
+h2,
+h3,
+label {
+  font-weight: 600;
+}
+
+legend,
+label,
+h2 {
+  color: var(--muted);
+}
+
+legend {
+  padding: 0 0 12px;
+  font-size: 0.95rem;
+}
+
+fieldset > div,
+.response-rates > div {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+label {
+  font-size: 0.8rem;
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+  padding: 10px 12px;
+  color: var(--text);
+  background: rgba(12, 18, 28, 0.3);
+  outline: none;
+  font: inherit;
+}
+
+select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 12px) calc(50% - 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 36px;
+}
+
+input[type="date"] {
+  color-scheme: dark;
+}
+
+input:focus,
+select:focus,
+input[type="range"]:focus {
+  border-color: rgba(244, 247, 251, 0.4);
+  box-shadow: 0 0 0 3px rgba(244, 247, 251, 0.08);
+}
+
+section {
+  padding: 14px;
+}
+
+section[aria-label="Lead forecast chart"] {
+  grid-area: chart;
+  min-height: 332px;
+}
+
+section[aria-label="Lead forecast chart"] h2 {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+}
+
+section[aria-label="Lead forecast chart"] > div {
+  display: grid;
+  place-items: center;
+  min-height: 270px;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px) 0 0 / 100% 42px,
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px) 0 0 / 64px 100%,
+    linear-gradient(180deg, #1a2435 0%, #182233 100%);
+  color: var(--muted);
+  font-weight: 600;
+}
+
+section[aria-label="Outcome summary"] {
+  grid-area: summary;
+  display: grid;
+  gap: 16px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+section[aria-label="Outcome summary"] h2 {
+  display: none;
+}
+
+section[aria-label="Outcome summary"] article {
+  padding: 12px 14px;
+  background: linear-gradient(180deg, #aab3c2, #939dac);
+  color: #f9fbff;
+  min-height: 104px;
+}
+
+section[aria-label="Outcome summary"] article:nth-of-type(2) {
+  background: linear-gradient(180deg, #ccd2dc, #b3bdcb);
+}
+
+section[aria-label="Outcome summary"] article:nth-of-type(3) {
+  background: linear-gradient(180deg, #e2e6ed, #cfd6e1);
+  color: #1e2838;
+}
+
+section[aria-label="Outcome summary"] h3 {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+}
+
+section[aria-label="Outcome summary"] p {
+  margin: 0;
+  line-height: 1;
+}
+
+section[aria-label="Outcome summary"] p:first-of-type {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+section[aria-label="Outcome summary"] p:last-of-type {
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  position: relative;
+  overflow: hidden;
+  color: transparent;
+}
+
+section[aria-label="Outcome summary"] article:nth-of-type(2) p:last-of-type,
+section[aria-label="Outcome summary"] article:nth-of-type(3) p:last-of-type {
+  background: rgba(29, 39, 55, 0.22);
+}
+
+section[aria-label="Outcome summary"] p:last-of-type::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 100%;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.95);
+}
+
+section[aria-label="Response rates"] {
+  grid-area: response;
+  display: grid;
+  gap: 18px;
+}
+
+section[aria-label="Response rates"] h2 {
+  margin: 0 0 6px;
+  font-size: 0.95rem;
+}
+
+section[aria-label="Response rates"] > div {
+  display: grid;
+  gap: 8px;
+}
+
+input[type="range"] {
+  appearance: none;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  background: linear-gradient(90deg, #dfe5ee 0%, #9aa6b8 100%);
+  border-radius: 999px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border: 2px solid #f2f5fa;
+  border-radius: 50%;
+  background: #e7ebf1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #f2f5fa;
+  border-radius: 50%;
+  background: #e7ebf1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 999px;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #dfe5ee 0%, #9aa6b8 100%);
+}
+
+input[type="range"]::-moz-range-progress {
+  height: 8px;
+  border-radius: 999px;
+  background: #dfe5ee;
+}
+
+@media (max-width: 980px) {
+  main {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "sidebar"
+      "chart"
+      "summary"
+      "response";
+  }
+
+  section[aria-label="Lead forecast chart"] {
+    min-height: auto;
+  }
+
+  section[aria-label="Outcome summary"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  section[aria-label="Response rates"] {
+    grid-area: auto;
+  }
+}
