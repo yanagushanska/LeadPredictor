@@ -113,26 +113,39 @@ label {
 input,
 select {
   width: 100%;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
   padding: 10px 12px;
   color: var(--text);
-  background: rgba(12, 18, 28, 0.3);
+  background: rgba(25, 35, 50, 0.6);
   outline: none;
   font: inherit;
+  transition: all 0.2s ease;
+}
+
+input:hover,
+select:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(25, 35, 50, 0.8);
+}
+
+input[type="text"] {
+  color-scheme: dark;
+}
+
+input[type="date"] {
+  color-scheme: dark;
+  padding: 10px 12px;
+  cursor: pointer;
 }
 
 select {
   appearance: none;
   background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
-  background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 12px) calc(50% - 2px);
-  background-size: 6px 6px, 6px 6px;
+  background-position: calc(100% - 14px) calc(50%), calc(100% - 8px) calc(50%);
+  background-size: 5px 5px, 5px 5px;
   background-repeat: no-repeat;
-  padding-right: 36px;
-}
-
-input[type="date"] {
-  color-scheme: dark;
+  padding-right: 32px;
 }
 
 input:focus,
@@ -235,7 +248,7 @@ section[aria-label="Outcome summary"] p:last-of-type::after {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
-  width: 100%;
+  width: var(--progress, 100%);
   border-radius: inherit;
   background: rgba(255, 255, 255, 0.95);
 }
@@ -256,6 +269,24 @@ section[aria-label="Response rates"] > div {
   gap: 8px;
 }
 
+.response-rate-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.response-rate-wrapper input[type="range"] {
+  flex: 1;
+}
+
+.response-rate-value {
+  min-width: 60px;
+  text-align: right;
+  font-weight: 600;
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+
 input[type="range"] {
   appearance: none;
   height: 8px;
@@ -273,6 +304,8 @@ input[type="range"]::-webkit-slider-thumb {
   border-radius: 50%;
   background: #e7ebf1;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+  /* nudge up to visually center over the track */
+  margin-top: -7px;
 }
 
 input[type="range"]::-moz-range-thumb {
@@ -282,6 +315,8 @@ input[type="range"]::-moz-range-thumb {
   border-radius: 50%;
   background: #e7ebf1;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+  /* Firefox doesn't support margin-top on the thumb; use translate */
+  transform: translateY(-3px);
 }
 
 input[type="range"]::-webkit-slider-runnable-track {
@@ -322,4 +357,33 @@ input[type="range"]::-moz-range-progress {
   section[aria-label="Response rates"] {
     grid-area: auto;
   }
+}
+
+/* Flatpickr calendar customization */
+.flatpickr-calendar {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius-lg);
+}
+
+.flatpickr-day {
+  color: var(--text);
+}
+
+.flatpickr-day.selected {
+  background: #4a90e2;
+  border-color: #4a90e2;
+}
+
+.flatpickr-day:hover {
+  background: rgba(74, 144, 226, 0.3);
+}
+
+.flatpickr-weekday {
+  color: var(--muted);
+}
+
+.flatpickr-current-month {
+  color: var(--text);
 }

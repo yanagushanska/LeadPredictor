@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LeadPredictor</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
   </head>
   <body>
     <header>
-      <h1>LeadPredictor</h1>
+      <h1>Wrong Title</h1>
     </header>
 
     <main>
@@ -34,12 +35,12 @@
 
             <div>
               <label for="campaign-start">Campaign Start</label>
-              <input id="campaign-start" name="campaignStart" type="date" />
+              <input id="campaign-start" name="campaignStart" type="text" placeholder="dd/mm/yyyy" />
             </div>
 
             <div>
               <label for="campaign-end">Campaign End</label>
-              <input id="campaign-end" name="campaignEnd" type="date" />
+              <input id="campaign-end" name="campaignEnd" type="text" placeholder="dd/mm/yyyy" />
             </div>
 
             <div>
@@ -59,7 +60,9 @@
 
       <section aria-label="Lead forecast chart">
         <h2>Forecast</h2>
-        <div>Chart placeholder</div>
+        <div style="height:300px;">
+          <canvas id="forecast-chart"></canvas>
+        </div>
       </section>
 
       <section aria-label="Outcome summary">
@@ -89,17 +92,52 @@
 
         <div>
           <label for="lead-response-rate">Lead Response Rate</label>
-          <input id="lead-response-rate" name="leadResponseRate" type="range" min="0" max="100" value="40" />
+          <div class="response-rate-wrapper">
+            <input id="lead-response-rate" name="leadResponseRate" type="range" min="0" max="100" value="40" />
+            <span class="response-rate-value" id="lead-response-value">40.00%</span>
+          </div>
         </div>
 
         <div>
           <label for="prospect-response-rate">Prospect Response Rate</label>
-          <input id="prospect-response-rate" name="prospectResponseRate" type="range" min="0" max="100" value="20" />
+          <div class="response-rate-wrapper">
+            <input id="prospect-response-rate" name="prospectResponseRate" type="range" min="0" max="100" value="20" />
+            <span class="response-rate-value" id="prospect-response-value">20.00%</span>
+          </div>
         </div>
       </section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+      // Initialize date pickers with dd/mm/yyyy format
+      flatpickr('#campaign-start', {
+        dateFormat: 'd/m/Y',
+        allowInput: true
+      });
+      
+      flatpickr('#campaign-end', {
+        dateFormat: 'd/m/Y',
+        allowInput: true
+      });
+
+      // Format date from yyyy-mm-dd to dd/mm/yyyy for display
+      function formatDateDisplay(dateStr) {
+        if (!dateStr) return '';
+        const [year, month, day] = dateStr.split('-');
+        return `${day}/${month}/${year}`;
+      }
+
+      // Update date display when date input changes
+      document.getElementById('campaign-start').addEventListener('change', () => {
+        // Flatpickr handles formatting automatically
+      });
+
+      document.getElementById('campaign-end').addEventListener('change', () => {
+        // Flatpickr handles formatting automatically
+      });
+
       // Validation function
       function validateForm() {
         const totalRevenue = document.getElementById('total-revenue').value.trim();
@@ -161,6 +199,7 @@
         }
         
         document.getElementById('prospects-count').textContent = prospects;
+        if (typeof updateChart === 'function') updateChart();
       }
       
       // Calculate button click handler
@@ -186,8 +225,156 @@
       });
       
       // Response rate sliders trigger immediate recalculation (no validation needed)
-      document.getElementById('lead-response-rate').addEventListener('input', calculateLeads);
-      document.getElementById('prospect-response-rate').addEventListener('input', calculateProspects);
+      document.getElementById('lead-response-rate').addEventListener('input', (e) => {
+        document.getElementById('lead-response-value').textContent = parseFloat(e.target.value).toFixed(2) + '%';
+        calculateLeads();
+      });
+      document.getElementById('prospect-response-rate').addEventListener('input', (e) => {
+        document.getElementById('prospect-response-value').textContent = parseFloat(e.target.value).toFixed(2) + '%';
+        calculateProspects();
+      });
+
+      // Chart.js: initialize a simple bar chart and provide an update function
+      const ctx = document.getElementById('forecast-chart').getContext('2d');
+      const forecastChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: [],
+          datasets: [
+            {
+              label: 'Prospects',
+              backgroundColor: '#7fb3ff',
+              data: [],
+              stack: 'stack1'
+            },
+            {
+              label: 'Leads',
+              backgroundColor: '#4a90e2',
+              data: [],
+              stack: 'stack1'
+            },
+            {
+              label: 'Customers',
+              backgroundColor: '#2ecc71',
+              data: [],
+              stack: 'stack1'
+            }
+          ]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { mode: 'index', intersect: false, axis: 'y' },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#2a3648',
+              titleColor: '#fff',
+              bodyColor: '#fff',
+              callbacks: {
+                title: (items) => {
+                  const idx = items && items[0] ? items[0].dataIndex : 0;
+                  const chart = items && items[0] ? items[0].chart : null;
+                  const label = chart && chart.data.labels ? chart.data.labels[idx] : String(idx + 1);
+                  return `Month #${label}`;
+                },
+                label: (context) => {
+                  const idx = context.dataIndex;
+                  const chart = context.chart;
+                  const ds = chart.data.datasets[context.datasetIndex];
+                  const cum = ds.data.slice(0, idx + 1).reduce((s, v) => s + (v || 0), 0);
+                  return `${ds.label}: ${cum}`;
+                },
+                footer: (items) => {
+                  const idx = items && items[0] ? items[0].dataIndex : 0;
+                  const chart = items && items[0] ? items[0].chart : null;
+                  const total = chart ? chart.data.datasets.reduce((sum, d) => sum + d.data.slice(0, idx + 1).reduce((s, v) => s + (v || 0), 0), 0) : 0;
+                  return `Total: ${total}`;
+                }
+              }
+            }
+          },
+          scales: {
+            x: {
+              stacked: true,
+              beginAtZero: true,
+              ticks: {
+                callback: (value) => `${value} people`
+              },
+              grid: { color: 'rgba(255,255,255,0.03)' }
+            },
+            y: {
+              stacked: true,
+              grid: { display: false },
+              ticks: { color: '#9fb0c8' }
+            }
+          },
+          elements: {
+            bar: { borderRadius: 8, barThickness: 18 }
+          }
+        }
+      });
+
+      function updateChart() {
+        // Read totals from the summary DOM
+        const totalProspects = parseInt(document.getElementById('prospects-count').textContent) || 0;
+        const totalLeads = parseInt(document.getElementById('leads-count').textContent) || 0;
+        const totalCustomers = parseInt(document.getElementById('customers-count').textContent) || 0;
+
+        // Determine number of months from campaign dates (dd/mm/YYYY)
+        function parseDDMMYYYY(str) {
+          if (!str) return null;
+          const parts = str.split('/');
+          if (parts.length !== 3) return null;
+          const day = parseInt(parts[0], 10);
+          const month = parseInt(parts[1], 10) - 1;
+          const year = parseInt(parts[2], 10);
+          return new Date(year, month, day);
+        }
+
+        const start = parseDDMMYYYY(document.getElementById('campaign-start').value);
+        const end = parseDDMMYYYY(document.getElementById('campaign-end').value);
+        let months = 6;
+        if (start && end && end > start) {
+          months = (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth()) + 1;
+          months = Math.max(1, Math.min(months, 12));
+        }
+
+        function distribute(total, n) {
+          if (!total || n <= 0) return new Array(n).fill(0);
+          const arr = [];
+          for (let i = 1; i <= n; i++) {
+            arr.push(Math.round((total / n) * i));
+          }
+          return arr;
+        }
+
+        const prospectsPerMonth = distribute(totalProspects, months);
+        const leadsPerMonth = distribute(totalLeads, months);
+        const customersPerMonth = distribute(totalCustomers, months);
+
+        // labels: Month 1 .. Month N
+        const labels = new Array(months).fill(0).map((_, i) => String(i + 1));
+
+        forecastChart.data.labels = labels;
+        forecastChart.data.datasets[0].data = prospectsPerMonth;
+        forecastChart.data.datasets[1].data = leadsPerMonth;
+        forecastChart.data.datasets[2].data = customersPerMonth;
+        forecastChart.update();
+
+        // Update summary progress bars (percent of prospects)
+        const articles = document.querySelectorAll('section[aria-label="Outcome summary"] article');
+        const pct = (value) => (totalProspects ? Math.round((value / totalProspects) * 100) : 0);
+        if (articles.length >= 3) {
+          articles[0].style.setProperty('--progress', '100%');
+          articles[1].style.setProperty('--progress', pct(totalLeads) + '%');
+          articles[2].style.setProperty('--progress', pct(totalCustomers) + '%');
+        }
+      }
+
+      // call once to render initial state
+      updateChart();
     </script>
   </body>
 </html>
