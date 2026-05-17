@@ -64,7 +64,7 @@
 
         <article>
           <h3>Prospects</h3>
-          <p>125</p>
+          <p id="prospects-count">125</p>
           <p>100%</p>
         </article>
 
@@ -124,6 +124,22 @@
         }
         
         document.getElementById('leads-count').textContent = leads;
+        calculateProspects();
+      }
+      
+      // Formula 03: Calculate prospects from leads
+      // prospects = leads * 100 / prospectResponseRate
+      function calculateProspects() {
+        const leadsElement = document.getElementById('leads-count');
+        const leads = parseInt(leadsElement.textContent) || 0;
+        const prospectResponseRate = parseInt(document.getElementById('prospect-response-rate').value) || 1;
+        
+        let prospects = 0;
+        if (leads > 0 && prospectResponseRate > 0) {
+          prospects = Math.round(leads * 100 / prospectResponseRate);
+        }
+        
+        document.getElementById('prospects-count').textContent = prospects;
       }
       
       // Add event listeners to input fields
@@ -136,10 +152,12 @@
         calculateLeads();
       });
       document.getElementById('lead-response-rate').addEventListener('input', calculateLeads);
+      document.getElementById('prospect-response-rate').addEventListener('input', calculateProspects);
       
       // Initial calculation with demo values
       calculateCustomers();
       calculateLeads();
+      calculateProspects();
     </script>
   </body>
 </html>
