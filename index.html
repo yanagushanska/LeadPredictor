@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LeadPredictor</title>
+  </head>
+  <body>
+    <header>
+      <h1>LeadPredictor</h1>
+    </header>
+
+    <main>
+      <aside aria-label="Calculator inputs">
+        <form>
+          <fieldset>
+            <legend>Lead settings</legend>
+
+            <div>
+              <label for="language">Language</label>
+              <select id="language" name="language">
+                <option value="en">English</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="currency">Currency</label>
+              <select id="currency" name="currency">
+                <option value="usd">US Dollar</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="campaign-start">Campaign Start</label>
+              <input id="campaign-start" name="campaignStart" type="date" />
+            </div>
+
+            <div>
+              <label for="campaign-end">Campaign End</label>
+              <input id="campaign-end" name="campaignEnd" type="date" />
+            </div>
+
+            <div>
+              <label for="total-revenue">Total Revenue</label>
+              <input id="total-revenue" name="totalRevenue" type="number" min="0" step="1" />
+            </div>
+
+            <div>
+              <label for="avg-order-value">Avg. Order Value</label>
+              <input id="avg-order-value" name="avgOrderValue" type="number" min="0" step="1" />
+            </div>
+          </fieldset>
+        </form>
+      </aside>
+
+      <section aria-label="Lead forecast chart">
+        <h2>Forecast</h2>
+        <div>Chart placeholder</div>
+      </section>
+
+      <section aria-label="Outcome summary">
+        <h2>Summary</h2>
+
+        <article>
+          <h3>Prospects</h3>
+          <p>125</p>
+          <p>100%</p>
+        </article>
+
+        <article>
+          <h3>Leads</h3>
+          <p>25</p>
+          <p>20%</p>
+        </article>
+
+        <article>
+          <h3>Customers</h3>
+          <p>10</p>
+          <p>8%</p>
+        </article>
+      </section>
+
+      <section aria-label="Response rates">
+        <h2>Response rates</h2>
+
+        <div>
+          <label for="lead-response-rate">Lead Response Rate</label>
+          <input id="lead-response-rate" name="leadResponseRate" type="range" min="0" max="100" value="40" />
+        </div>
+
+        <div>
+          <label for="prospect-response-rate">Prospect Response Rate</label>
+          <input id="prospect-response-rate" name="prospectResponseRate" type="range" min="0" max="100" value="20" />
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
