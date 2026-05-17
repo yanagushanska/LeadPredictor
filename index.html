@@ -76,7 +76,7 @@
 
         <article>
           <h3>Customers</h3>
-          <p>10</p>
+          <p id="customers-count">10</p>
           <p>8%</p>
         </article>
       </section>
@@ -95,5 +95,28 @@
         </div>
       </section>
     </main>
+
+    <script>
+      // Formula 01: Calculate customers needed
+      // customers = totalRevenue / avgOrderValue
+      function calculateCustomers() {
+        const totalRevenue = parseFloat(document.getElementById('total-revenue').value) || 0;
+        const avgOrderValue = parseFloat(document.getElementById('avg-order-value').value) || 0;
+        
+        let customers = 0;
+        if (totalRevenue > 0 && avgOrderValue > 0) {
+          customers = Math.round(totalRevenue / avgOrderValue);
+        }
+        
+        document.getElementById('customers-count').textContent = customers;
+      }
+      
+      // Add event listeners to input fields
+      document.getElementById('total-revenue').addEventListener('input', calculateCustomers);
+      document.getElementById('avg-order-value').addEventListener('input', calculateCustomers);
+      
+      // Initial calculation with demo values
+      calculateCustomers();
+    </script>
   </body>
 </html>
