@@ -70,7 +70,7 @@
 
         <article>
           <h3>Leads</h3>
-          <p>25</p>
+          <p id="leads-count">25</p>
           <p>20%</p>
         </article>
 
@@ -111,12 +111,35 @@
         document.getElementById('customers-count').textContent = customers;
       }
       
+      // Formula 02: Calculate leads from customers
+      // leads = customers * 100 / leadResponseRate
+      function calculateLeads() {
+        const customersElement = document.getElementById('customers-count');
+        const customers = parseInt(customersElement.textContent) || 0;
+        const leadResponseRate = parseInt(document.getElementById('lead-response-rate').value) || 1;
+        
+        let leads = 0;
+        if (customers > 0 && leadResponseRate > 0) {
+          leads = Math.round(customers * 100 / leadResponseRate);
+        }
+        
+        document.getElementById('leads-count').textContent = leads;
+      }
+      
       // Add event listeners to input fields
-      document.getElementById('total-revenue').addEventListener('input', calculateCustomers);
-      document.getElementById('avg-order-value').addEventListener('input', calculateCustomers);
+      document.getElementById('total-revenue').addEventListener('input', () => {
+        calculateCustomers();
+        calculateLeads();
+      });
+      document.getElementById('avg-order-value').addEventListener('input', () => {
+        calculateCustomers();
+        calculateLeads();
+      });
+      document.getElementById('lead-response-rate').addEventListener('input', calculateLeads);
       
       // Initial calculation with demo values
       calculateCustomers();
+      calculateLeads();
     </script>
   </body>
 </html>
