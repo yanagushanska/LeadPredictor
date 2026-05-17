@@ -16,6 +16,7 @@
         <form>
           <fieldset>
             <legend>Lead settings</legend>
+            <div id="validation-error" style="display: none; color: #ff6b6b; font-size: 0.85rem; margin-bottom: 12px; padding: 8px; background: rgba(255, 107, 107, 0.1); border-radius: 6px;"></div>
 
             <div>
               <label for="language">Language</label>
@@ -50,6 +51,8 @@
               <label for="avg-order-value">Avg. Order Value</label>
               <input id="avg-order-value" name="avgOrderValue" type="number" min="0" step="1" />
             </div>
+            
+            <button type="button" id="calculate-btn" style="width: 100%; margin-top: 16px; padding: 10px; background: #4a90e2; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem;">Calculate</button>
           </fieldset>
         </form>
       </aside>
@@ -97,6 +100,24 @@
     </main>
 
     <script>
+      // Validation function
+      function validateForm() {
+        const totalRevenue = document.getElementById('total-revenue').value.trim();
+        const avgOrderValue = document.getElementById('avg-order-value').value.trim();
+        const campaignStart = document.getElementById('campaign-start').value.trim();
+        const campaignEnd = document.getElementById('campaign-end').value.trim();
+        const errorDiv = document.getElementById('validation-error');
+        
+        if (!totalRevenue || !avgOrderValue || !campaignStart || !campaignEnd) {
+          errorDiv.textContent = 'Please fill in all fields before calculating';
+          errorDiv.style.display = 'block';
+          return false;
+        }
+        
+        errorDiv.style.display = 'none';
+        return true;
+      }
+
       // Formula 01: Calculate customers needed
       // customers = totalRevenue / avgOrderValue
       function calculateCustomers() {
@@ -142,22 +163,31 @@
         document.getElementById('prospects-count').textContent = prospects;
       }
       
-      // Add event listeners to input fields
-      document.getElementById('total-revenue').addEventListener('input', () => {
-        calculateCustomers();
-        calculateLeads();
+      // Calculate button click handler
+      document.getElementById('calculate-btn').addEventListener('click', () => {
+        if (validateForm()) {
+          calculateCustomers();
+          calculateLeads();
+        }
       });
-      document.getElementById('avg-order-value').addEventListener('input', () => {
-        calculateCustomers();
-        calculateLeads();
+      
+      // Allow Enter key in number inputs to trigger calculation
+      document.getElementById('total-revenue').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') document.getElementById('calculate-btn').click();
       });
+      document.getElementById('avg-order-value').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') document.getElementById('calculate-btn').click();
+      });
+      document.getElementById('campaign-start').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') document.getElementById('calculate-btn').click();
+      });
+      document.getElementById('campaign-end').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') document.getElementById('calculate-btn').click();
+      });
+      
+      // Response rate sliders trigger immediate recalculation (no validation needed)
       document.getElementById('lead-response-rate').addEventListener('input', calculateLeads);
       document.getElementById('prospect-response-rate').addEventListener('input', calculateProspects);
-      
-      // Initial calculation with demo values
-      calculateCustomers();
-      calculateLeads();
-      calculateProspects();
     </script>
   </body>
 </html>
