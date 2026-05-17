@@ -1,0 +1,14 @@
+[33m2593d65[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m Merge pull request #6 from yanagushanska/Revert-commit
+[33m3d467dd[m[33m ([m[1;31morigin/Revert-commit[m[33m, [m[1;32mRevert-commit[m[33m)[m Bad title change to be reverted
+[33me7696da[m Merge pull request #5 from yanagushanska/Readme
+[33m9884a85[m[33m ([m[1;31morigin/Readme[m[33m, [m[1;32mReadme[m[33m)[m Feature a README file
+[33m092d4fd[m Merge pull request #4 from yanagushanska/Calculation-validation
+[33mfe4df62[m[33m ([m[1;31morigin/Calculation-validation[m[33m, [m[1;32mCalculation-validation[m[33m)[m Error message and validation
+[33m5e0c619[m Merge pull request #3 from yanagushanska/Calculations-and-formulas-3
+[33mcdb0255[m[33m ([m[1;31morigin/Calculations-and-formulas-3[m[33m, [m[1;32mCalculations-and-formulas-3[m[33m)[m Third calculation formula
+[33m84326ea[m Merge pull request #2 from yanagushanska/Calculations-and-formulas-2
+[33mfea9dea[m[33m ([m[1;31morigin/Calculations-and-formulas-2[m[33m, [m[1;32mCalculations-and-formulas-2[m[33m)[m Second formula calculation
+[33m1efd07c[m Merge pull request #1 from yanagushanska/Calculations-and-formulas
+[33m588cb1a[m[33m ([m[1;31morigin/Calculations-and-formulas[m[33m, [m[1;32mCalculations-and-formulas[m[33m)[m First formula calculation
+[33m316f2e7[m[33m ([m[1;31morigin/HEAD[m[33m, [m[1;31morigin/CSS-Styling[m[33m, [m[1;32mCSS-Styling[m[33m)[m Adding CSS Styling to resemble the example
+[33m31c825d[m An HTML skeleton of the Lead Calculator
